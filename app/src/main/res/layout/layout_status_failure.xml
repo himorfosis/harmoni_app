@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/status_connection_error_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="20dp">
+
+    <TextView
+        android:id="@+id/status_error_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/failed_server_connection"
+        android:textColor="@color/text_title_hint"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/status_error_message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/failed_server_connection_message"
+        android:textColor="@color/text_title_hint"
+        android:textSize="@dimen/_14ssp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

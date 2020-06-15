@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="@dimen/_45sdp"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:gravity="center"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back_bar_btn"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/ic_arrow_left_white"
+            android:layout_gravity="left|center"/>
+
+        <TextView
+            android:id="@+id/title_bar_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_50sdp"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Toolbar Detail"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
+    </FrameLayout>
+
+</LinearLayout>

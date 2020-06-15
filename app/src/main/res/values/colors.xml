@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#892c85</color>
+    <color name="colorPrimaryDark">#752d8c</color>
+    <color name="colorAccent">#a6a6a6</color>
+
+    <!-- color primary app -->
+    <color name="purple">#892c85</color>
+    <color name="purple_dark">#752d8c</color>
+    <color name="yellow">#fac416</color>
+    <color name="yellow_dark">#f9a131</color>
+    <color name="orange">#f26a33</color>
+    <color name="background">#752d8c</color>
+    <color name="btn_primary">#892c85</color>
+    <color name="text_primary">#892c85</color>
+
+
+
+    <color name="black">#000000</color>
+    <color name="red">#c93324</color>
+    <color name="gold">#FCCE89</color>
+    <color name="green">#00ab6b</color>
+    <color name="white">#ffffff</color>
+    <color name="blue">#187bcd</color>
+
+    <color name="btn_green">#00ab6b</color>
+    <color name="btn_gray">#a6a6a6</color>
+    <color name="btn_blue">#24a0ed</color>
+
+
+    <color name="text_title_hint">#9B9A9B</color>
+    <color name="text_hint">#a6a6a6</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_black">#000000</color>
+    <color name="text_black_primary">#262626</color>
+    <color name="text_black_description">#4B4B4D</color>
+    <color name="text_nav">#808080</color>
+    <color name="text_blue">#187bcd</color>
+    <color name="text_selected">#c93324</color>
+    <color name="text_red">#c93324</color>
+    <color name="text_green">#00ab6b</color>
+
+    <color name="line_item">#EAEAEA</color>
+
+
+</resources>

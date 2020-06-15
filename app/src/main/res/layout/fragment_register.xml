@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_100sdp">
+
+            <ImageView
+                android:id="@+id/close_register_img"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_close_black"
+                android:layout_gravity="right|center"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_30ssp"
+                android:textStyle="bold"
+                android:textColor="@color/text_black_primary"
+                android:layout_marginBottom="@dimen/_30sdp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/name_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Nama Lengkap..."
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/email_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Email..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/username_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Username..."
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="false"
+                android:gravity="center"
+                app:hintEnabled="false"
+                app:passwordToggleDrawable="@drawable/ic_password_visible_selector"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#F3C16E"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <EditText
+                    android:id="@+id/password_ed"
+                    style="@style/EditTextBorderData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="Masukkan Password..."
+                    android:inputType="textPassword"
+                    android:imeOptions="actionNext"
+                    android:padding="@dimen/_10sdp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nomor Telepon"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/phone_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Nomor Telepon..."
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Perusahaan"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                android:visibility="gone"
+
+                />
+
+            <EditText
+                android:id="@+id/company_name_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Nama Perusahaan..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alamat Perusahaan"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                android:visibility="gone"
+                />
+
+            <EditText
+                android:id="@+id/company_address_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Alamat Perusahaan..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionDone"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone"
+                />
+
+            <Button
+                android:id="@+id/register_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:text="REGISTER"
+                style="@style/btn_primary"
+                android:layout_margin="@dimen/_10sdp"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

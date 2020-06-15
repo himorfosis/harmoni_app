@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".homepage.fragment.auth.Login">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar_detail"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_100sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Judul"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/title_event_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Judul..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deskripsi"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/description_event_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Deskrpsi..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lokasi"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/location_event_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Lokasi..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nomor Telepon"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/phone_event_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Nomor Telepon..."
+                android:inputType="number"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <EditText
+                android:id="@+id/email_ed"
+                style="@style/EditTextBorderData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan Email Anda..."
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gambar Event"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
+
+            <TextView
+                android:id="@+id/choose_image_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Klik Disini Untuk Pilih Gambar"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_blue"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:gravity="left"
+                />
+
+            <ImageView
+                android:id="@+id/upload_event_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:src="@drawable/ic_broken_image"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/send_event_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:text="KIRIM"
+        style="@style/btn_primary"
+        android:layout_margin="@dimen/_10sdp"
+        />
+
+</LinearLayout>

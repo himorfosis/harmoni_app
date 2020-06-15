@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="@dimen/_10sdp">
+
+
+        <ImageButton
+            android:id="@+id/close_dialog_btn"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@drawable/ic_close_black"
+            android:layout_gravity="right"/>
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            style="@style/text_title_result"
+            android:text="Title"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/desctiption_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/text_description_status"
+            android:text="description"
+            android:gravity="center"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            />
+
+        <Button
+            android:id="@+id/action_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/btn_primary"
+            android:text="Oke"
+            style="@style/text_btn_white"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

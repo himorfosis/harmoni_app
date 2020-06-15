@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Harmoni</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Beranda</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_calendar">Kalender</string>
+    <string name="menu_about">Tentang</string>
+    <string name="menu_event">Event</string>
+    <string name="menu_service">Service</string>
+    <string name="menu_send">Send</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_register">Register</string>
+
+    <!-- status data -->
+
+    <string name="successful">successful</string>
+    <string name="please_complete_data">Harap isi data dengan lengkap</string>
+    <string name="please_complete_data_message">Coba periksa kelengkapan data anda</string>
+    <string name="data_not_available">Yah, data belum tersedia</string>
+    <string name="data_not_available_message">Silahkan tambahkan data</string>
+    <string name="note_empty">Tidak ada catatan</string>
+    <string name="wrong_email_or_password">Email Atau Password Salah</string>
+
+    <string name="event_empty">Event Tidak Tersedia</string>
+    <string name="event_empty_description">Yah, Anda tidak memiliki event bulan ini</string>
+
+    <!-- status connection -->
+
+    <string name="failed_connection">Koneksi Bermasalah</string>
+    <string name="failed_connection_message">Cek koneksi Wi-Fi atau kuota internetmu dan coba lagi ya.</string>
+
+    <string name="failed_server_connection">Koneksi Server Bermasalah</string>
+    <string name="failed_server_connection_message">Coba sebentar lagi ya, Kami sedang memperbaikinya</string>
+    <string name="disconnect">Yah, internetnya mati...</string>
+    <string name="disconnect_message">Cek koneksi Wi-Fi atau kuota internetmu dan coba lagi ya.</string>
+
+
+    <!-- about app harmoni -->
+    <string name="our_story">Our Story</string>
+    <string name="our_story_description">Berawal dari sebuah perbincangan di whatsapp pada tahun 2015. Kami berkembang menjadi sebuah perusahaan solid yang
+        bergerak di bidang Event Organizer dan Multimedia Services.
+
+        Hingga tahun 2019, kami sudah menangani lebih dari 145
+        event, mulai dari pulau Sumatra, Batam, Jawa, Kalimantan,
+        Bali, Lombok, Sulawesi, Maluku, hingga Papua.</string>
+
+    <string name="our_vision">Our Vision</string>
+    <string name="our_vision_description">
+        Memberikan user pengalaman istimewa dari setiap event yang
+        diciptakan bersama. </string>
+
+    <string name="our_mission">Our Mission</string>
+    <string name="our_mission_description">
+        Menawarkan servis handal yang mengutamakan ide-ide segar dan
+        kreatif, disertai dengan kecepatan, ketepatan, dan kualitas.</string>
+
+    <string name="our_philosophy">Our Philosophy</string>
+    <string name="our_philosophy_description">
+        Harmonisasi adalah kunci dari penciptaan karya yang sukses, serta
+        penuh dengan energi positif dan kebaikan.</string>
+
+
+</resources>

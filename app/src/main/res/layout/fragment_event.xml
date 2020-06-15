@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pilih Bulan"
+        style="@style/text_item_title_event"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_5sdp">
+
+        <Spinner
+            android:id="@+id/month_spinner"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/bg_date_spinner"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown"
+            android:visibility="visible"
+            />
+
+        <Spinner
+            android:id="@+id/year_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@drawable/bg_date_spinner"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown"
+            android:visibility="visible"
+            />
+
+        <Button
+            android:id="@+id/show_event_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:text="Tampilkan"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_circle_green"
+            android:layout_gravity="right"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"/>
+
+    </LinearLayout>
+
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="@dimen/_10sdp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="bottom|left">-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/month_spinner"-->
+<!--                android:layout_width="@dimen/_110sdp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:dropDownWidth="wrap_content"-->
+<!--                android:spinnerMode="dropdown"-->
+<!--                android:visibility="visible"-->
+<!--                android:background="@drawable/bg_date_spinner"-->
+<!--                android:layout_marginRight="@dimen/_10sdp"-->
+<!--                />-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/year_spinner"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/bg_date_spinner"-->
+<!--                android:dropDownWidth="wrap_content"-->
+<!--                android:spinnerMode="dropdown"-->
+<!--                android:visibility="visible"-->
+<!--                android:layout_marginRight="@dimen/_10sdp"-->
+<!--                />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/show_event_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/_35sdp"-->
+<!--            android:text="Tampilkan"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="@dimen/_10ssp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@drawable/btn_circle_green"/>-->
+
+
+<!--    </LinearLayout>-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/event_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                layout="@layout/layout_status_failure"/>
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/add_event_img"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@drawable/btn_circle_green"
+            android:src="@drawable/ic_add_white"
+            android:padding="@dimen/_8sdp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/_10sdp"/>
+
+    </FrameLayout>
+
+
+</LinearLayout>
