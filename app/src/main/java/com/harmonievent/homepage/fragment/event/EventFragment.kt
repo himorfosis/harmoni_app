@@ -81,7 +81,6 @@ class EventFragment : Fragment() {
         }
 
         show_event_btn.onClick {
-//            toast("Menampilkan Event $MONTH_SELECTED-$YEAR_SELECTED")
             onSuccessFetchEvent()
         }
 
@@ -93,7 +92,6 @@ class EventFragment : Fragment() {
         var monthNow = if (Calendar.MONTH < 10) "0${Calendar.MONTH}" else "${Calendar.MONTH}"
         isLog("month now : $monthNow")
 //        MONTH_SELECTED = monthNow
-
         val date = SimpleDateFormat("MM")
         val month = date.format(Date())
 

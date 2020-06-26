@@ -51,7 +51,6 @@ dependencies {
     implementation "org.jetbrains.anko:anko:0.10.8"
 
     // calendar
-    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
 
     // image processing

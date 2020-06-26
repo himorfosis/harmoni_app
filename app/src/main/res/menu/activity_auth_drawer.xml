@@ -24,21 +24,21 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_person_gray"
             android:title="@string/menu_about" />
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/menu_login" />
+        <item
+            android:id="@+id/nav_register"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/menu_register" />
 
     </group>
 
+<!--    <item android:title="">-->
+<!--        <menu>-->
 
-    <item android:title="">
-        <menu>
-            <item
-                android:id="@+id/nav_login"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_login" />
-            <item
-                android:id="@+id/nav_register"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_register" />
-        </menu>
-    </item>
+<!--        </menu>-->
+<!--    </item>-->
 
 </menu>

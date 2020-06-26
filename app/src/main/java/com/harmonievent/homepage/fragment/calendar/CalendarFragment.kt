@@ -13,16 +13,23 @@ import com.harmonievent.R
 import com.harmonievent.dialog.DialogInfo
 import com.harmonievent.dialog.DialogLoading
 import com.harmonievent.entity.DataSample
+import com.harmonievent.event.EventInput
 import com.harmonievent.event.adapter.EventAdapter
+import com.harmonievent.homepage.HomeAuthActivity
 import com.harmonievent.model.EventModelResponse
 import com.harmonievent.network.config.AppNetwork
 import com.harmonievent.network.service.EventService
 import com.harmonievent.utilities.DateCore
+import com.harmonievent.utilities.preferences.HarmoniPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_calendar.add_event_img
+import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.toast
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -59,6 +66,21 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
         fetchEvent()
         calendarViewCustom.setUseThreeLetterAbbreviation(true)
+
+        add_event_img.onClick {
+
+            val id = HarmoniPreferences.account.getString("id")
+            if (id!!.isEmpty()) {
+                startActivity(
+                    intentFor<HomeAuthActivity>(
+                        "HOME" to HomeAuthActivity.LOGIN
+                    )
+                )
+            } else {
+                startActivity(intentFor<EventInput>())
+            }
+        }
+
     }
 
     private fun setEventSelectedMonth(monthSelected: String) {
@@ -75,6 +97,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
             val monthData = it.tgl_mulai.substring(0, 7)
             isLog("month data : $monthData")
             if (monthSelected == monthData) {
+                isLog("loop tgl ${it.tgl_selesai}")
                 listEvent.add(it)
             }
         }
@@ -169,13 +192,13 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
     override fun onDayClick(dateClicked: Date?) {
 
-
         val monthSelected = DateCore.convertDateToSpecificDate(dateClicked!!)
         isLog("date clicked : $monthSelected")
         for(pos in 0 until listData.size) {
             val it = listData[pos]
             if (monthSelected == it.tgl_mulai) {
-                val dialog = DialogInfo(requireContext(), it.judul, "Event ini diselenggarakan bertempat di ${it.lokasi}")
+                isLog("date selected : ${it.tgl_mulai}")
+                val dialog = DialogInfo(requireContext(), it.judul, "Event ${it.judul} diselenggarakan bertempat di ${it.lokasi}")
                 dialog.setCancelable(false)
                 dialog.show()
             }

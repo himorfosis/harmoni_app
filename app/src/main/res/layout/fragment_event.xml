@@ -133,7 +133,8 @@
             android:src="@drawable/ic_add_white"
             android:padding="@dimen/_8sdp"
             android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/_10sdp"/>
+            android:layout_margin="@dimen/_10sdp"
+            android:visibility="gone"/>
 
     </FrameLayout>
 
