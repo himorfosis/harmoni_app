@@ -78,6 +78,12 @@
         <item name="android:textSize">@dimen/_16ssp</item>
     </style>
 
+    <style name="text_item_title_about" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black_primary</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="text_item_location_event" parent="android:Widget.TextView">
         <item name="android:textColor">@color/text_green</item>
         <item name="android:textSize">@dimen/_12ssp</item>

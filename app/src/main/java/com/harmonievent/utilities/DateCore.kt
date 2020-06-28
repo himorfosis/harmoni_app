@@ -25,6 +25,13 @@ object DateCore {
         return date.time
     }
 
+    fun convertToDateTime(dateData: String): Long {
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val date = format.parse(dateData)
+        return date.time
+    }
+
 //    fun descripTimestamp(dateTime: Long): String {
 //        val date = Date(dateTime)
 //

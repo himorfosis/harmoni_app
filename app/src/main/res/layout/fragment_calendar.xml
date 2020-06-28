@@ -33,6 +33,14 @@
                         android:padding="@dimen/_10sdp"
                         android:text="Juni 2020" />
 
+                    <TextView
+                        style="@style/text_item_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:text="Ketuk kalender untuk memilih tanggal event"
+                        android:paddingBottom="@dimen/_5sdp"/>
+
                     <com.github.sundeepk.compactcalendarview.CompactCalendarView
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/calendarViewCustom"
@@ -40,33 +48,64 @@
                         android:layout_height="@dimen/_230sdp"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
-                        app:compactCalendarBackgroundColor="@android:color/white"
                         app:compactCalendarCurrentDayBackgroundColor="@color/colorPrimary"
+                        app:compactCalendarBackgroundColor="@android:color/white"
                         app:compactCalendarCurrentSelectedDayBackgroundColor="@color/btn_green"
                         app:compactCalendarMultiEventIndicatorColor="#fff"
                         app:compactCalendarTargetHeight="@dimen/_230sdp"
                         app:compactCalendarTextColor="@color/text_black_primary"
                         app:compactCalendarTextSize="@dimen/_12ssp" />
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_margin="@dimen/_10sdp"
+                        >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center|left"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@color/gold" />
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:background="@drawable/btn_circle_yellow" />
 
                         <TextView
                             style="@style/text_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:text="Status Menunggu" />
+                            android:text="Menunggu Verifikasi" />
 
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|left"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:background="@drawable/btn_circle_green" />
+
+                        <TextView
+                            style="@style/text_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="Sudah Dipesan" />
+
+
+                    </LinearLayout>
 
                     </LinearLayout>
 
@@ -80,7 +119,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
-                            android:paddingBottom="@dimen/_40sdp" />
+                            />
 
                         <include
                             layout="@layout/layout_status_failure"
@@ -106,7 +145,8 @@
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/btn_circle_green"
             android:padding="@dimen/_8sdp"
-            android:src="@drawable/ic_add_white" />
+            android:src="@drawable/ic_add_white"
+            android:visibility="gone"/>
 
 
     </FrameLayout>

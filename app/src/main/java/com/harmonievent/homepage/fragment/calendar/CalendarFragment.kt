@@ -1,5 +1,6 @@
 package com.harmonievent.homepage.fragment.calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -68,19 +69,23 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
         calendarViewCustom.setUseThreeLetterAbbreviation(true)
 
         add_event_img.onClick {
-
-            val id = HarmoniPreferences.account.getString("id")
-            if (id!!.isEmpty()) {
-                startActivity(
-                    intentFor<HomeAuthActivity>(
-                        "HOME" to HomeAuthActivity.LOGIN
-                    )
-                )
-            } else {
-                startActivity(intentFor<EventInput>())
-            }
+//            inputEvent()
         }
 
+    }
+
+    private fun inputEvent(date: String) {
+        val id = HarmoniPreferences.account.getString("id")
+        if (id!!.isEmpty()) {
+            startActivity(intentFor<HomeAuthActivity>(
+                    "HOME" to HomeAuthActivity.LOGIN
+                )
+            )
+        } else {
+            startActivity(intentFor<EventInput>(
+                "date" to date
+            ))
+        }
     }
 
     private fun setEventSelectedMonth(monthSelected: String) {
@@ -122,8 +127,13 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
             val year = DateCore.selectedYear(it.tgl_mulai)
 
             val dateTime = formatter.parse("$date-$month-$year")
-            val eventDate = Event(R.color.gold, dateTime.time, it.judul)
-            calendarViewCustom.addEvent(eventDate)
+            if (it.status == "Menunggu Verifikasi") {
+                val eventDate = Event(Color.YELLOW, dateTime.time, it.judul)
+                calendarViewCustom.addEvent(eventDate)
+            } else {
+                val eventDate = Event(Color.GREEN, dateTime.time, it.judul)
+                calendarViewCustom.addEvent(eventDate)
+            }
         }
 
     }
@@ -192,16 +202,33 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
     override fun onDayClick(dateClicked: Date?) {
 
-        val monthSelected = DateCore.convertDateToSpecificDate(dateClicked!!)
-        isLog("date clicked : $monthSelected")
-        for(pos in 0 until listData.size) {
-            val it = listData[pos]
-            if (monthSelected == it.tgl_mulai) {
-                isLog("date selected : ${it.tgl_mulai}")
-                val dialog = DialogInfo(requireContext(), it.judul, "Event ${it.judul} diselenggarakan bertempat di ${it.lokasi}")
-                dialog.setCancelable(false)
-                dialog.show()
+        val dateSelected = DateCore.convertDateToSpecificDate(dateClicked!!)
+        val dateTimeToday = DateCore.convertToDateTime(DateCore.getDateToday())
+        val dateTimeSelected = DateCore.convertToDateTime(dateSelected)
+
+        if (dateTimeSelected > dateTimeToday) {
+
+            var statusEvent = false
+            for (pos in 0 until listData.size) {
+                val it = listData[pos]
+                if (dateSelected == it.tgl_mulai) {
+                    if (it.status == "Menunggu Verifikasi") {
+                        statusEvent = false
+                    } else {
+                        isLog("date selected : ${it.tgl_mulai}")
+                        onDialog(it.judul, "Event ${it.judul} diselenggarakan bertempat di ${it.lokasi}")
+                        statusEvent = true
+                    }
+                    break
+                }
             }
+
+            if (statusEvent == false) {
+                inputEvent(dateSelected)
+            }
+
+        } else {
+            onDialog("Tanggal Kadaluarsa", "Yah, Tanggal ini tidak dapat dipilih, silahkan pilih tanggal lain")
         }
 
     }
@@ -214,6 +241,17 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
         val monthSelected = DateCore.convertDateToMonth(firstDayOfNewMonth!!)
         isLog("month selected : $monthSelected")
         setEventSelectedMonth(monthSelected)
+
+    }
+
+    private fun onDialog(title: String, description: String) {
+        val dialog = DialogInfo(
+            requireContext(),
+            title,
+            description
+        )
+        dialog.setCancelable(false)
+        dialog.show()
 
     }
 

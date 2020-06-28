@@ -50,6 +50,7 @@ class EventInput : AppCompatActivity() {
     var BITMAP: Bitmap? = null
     var DATE_SELECTED = ""
     var DURATION_SELECTED = ""
+    var dateSelected = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +58,14 @@ class EventInput : AppCompatActivity() {
 
         setToolbar()
         initUI()
-        addDurationToSpinner()
         imagePermission()
         setLoadingDialog()
 
     }
 
     private fun initUI() {
+
+        DATE_SELECTED = intent.getStringExtra("date")
 
         choose_image_tv.onClick {
             imagePermission()
@@ -76,30 +78,9 @@ class EventInput : AppCompatActivity() {
             checkSubmitDataEvent()
         }
 
-        date_event_tv.onClick {
-            selectedDateEvent()
-        }
-
-        date_event_tv.text = DateCore.getDateTodaySpecific()
-        DATE_SELECTED = DateCore.getDateToday()
+        date_event_tv.text = DATE_SELECTED
         isLog("date selected : $DATE_SELECTED")
 
-    }
-
-    private fun selectedDateEvent() {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            val month = if(monthOfYear < 10) "0$monthOfYear" else monthOfYear.toString()
-            date_event_tv.text =  "$dayOfMonth-$month-$year"
-            DATE_SELECTED = "$year-$month-$dayOfMonth"
-            isLog("date selected : $DATE_SELECTED")
-        }, year, month, day)
-
-        dpd.show()
     }
 
     private fun checkSubmitDataEvent() {
@@ -147,7 +128,7 @@ class EventInput : AppCompatActivity() {
             //  push event without image
             service.createEventWithoutImage(
                 "", idUser!!, title, description, location,
-                DateCore.getDateToday(), DateCore.getDateToday(), DateCore.getDateToday(),
+                dateSelected, dateSelected, DateCore.getDateToday(),
                 phone, email, "Menunggu Verifikasi", ""
             )
                 .observeOn(AndroidSchedulers.mainThread())
@@ -172,34 +153,6 @@ class EventInput : AppCompatActivity() {
 
         } else {
             onNotComplete()
-        }
-
-    }
-
-    private fun addDurationToSpinner() {
-
-        isLog("addYearToSpinner")
-
-        val listDay: MutableList<String> = ArrayList()
-        for (position in 0 until 30) {
-            val day = 1 + position
-            listDay.add("$day Hari")
-        }
-
-        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listDay)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        duration_event_spinner.adapter = arrayAdapter
-        duration_event_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                val data = parent!!.getItemAtPosition(position).toString()
-                DURATION_SELECTED = data.replace(" Hari", "")
-                isLog("DURATION_SELECTED $data")
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                //ga usah ada aksi
-            }
         }
 
     }

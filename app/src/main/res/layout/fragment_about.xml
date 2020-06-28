@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/_15sdp"
-    android:paddingRight="@dimen/_15sdp">
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,32 +22,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:gravity="center"
                 android:text="Harmoni"
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/_24ssp"
                 android:textStyle="bold"/>
 
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/our_story"
-                style="@style/text_detail_title" />
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_3sdp"
+                android:layout_margin="@dimen/_5sdp"
+                >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/our_story_description"
-                style="@style/text_detail_description"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/our_story"
+                        android:gravity="center"
+                        style="@style/text_item_title_about" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="@string/our_story_description"
+                        style="@style/text_detail_description"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/our_vision"
-                style="@style/text_detail_title"
+                style="@style/text_item_title_about"
                 />
 
             <TextView
@@ -63,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/our_mission"
-                style="@style/text_detail_title"
+                style="@style/text_item_title_about"
                 />
 
             <TextView
@@ -79,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/our_story"
-                style="@style/text_detail_title"
+                style="@style/text_item_title_about"
                 />
 
             <TextView
