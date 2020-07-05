@@ -14,8 +14,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.harmonievent.R
+import com.harmonievent.dialog.DialogInfo
 import com.harmonievent.dialog.DialogLoading
 import com.harmonievent.homepage.HomeActivity
+import com.harmonievent.model.EventModelResponse
 import com.harmonievent.network.config.AppNetwork
 import com.harmonievent.network.service.EventService
 import com.harmonievent.network.service.UserService
@@ -49,8 +51,7 @@ class EventInput : AppCompatActivity() {
     val GALLERY = 1
     var BITMAP: Bitmap? = null
     var DATE_SELECTED = ""
-    var DURATION_SELECTED = ""
-    var dateSelected = ""
+    var DURATION_EVENT = "1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,14 +59,19 @@ class EventInput : AppCompatActivity() {
 
         setToolbar()
         initUI()
+        addDurationToSpinner()
         imagePermission()
         setLoadingDialog()
-
     }
 
     private fun initUI() {
 
         DATE_SELECTED = intent.getStringExtra("date")
+
+        val dateData1 = DATE_SELECTED.substring(7, 10)
+        val dateData = DATE_SELECTED.substring(8, 10)
+        isLog("dateData : $dateData")
+        isLog("dateData 1 : $dateData1")
 
         choose_image_tv.onClick {
             imagePermission()
@@ -75,6 +81,8 @@ class EventInput : AppCompatActivity() {
         }
 
         send_event_btn.onClick {
+
+//            checkEventDuration()
             checkSubmitDataEvent()
         }
 
@@ -98,55 +106,65 @@ class EventInput : AppCompatActivity() {
         ) {
 
             val idUser = HarmoniPreferences.account.getString("id")
-
-            if (BITMAP != null) {
-
-                // set image
-                val fileImage = ImageCorePermission.saveImageInStorage(BITMAP!!)
-                val reqFile = RequestBody.create(MediaType.parse("image/*"), fileImage)
-                val body = MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
-
-                // set data
-                val map = HashMap<String, RequestBody>()
-                map["id_admin"] = createPartFromString("")
-                map["id_user"] = createPartFromString(idUser)
-                map["judul"] = createPartFromString(title)
-                map["deskripsi"] = createPartFromString(description)
-                map["lokasi"] = createPartFromString(location)
-                map["no_telp"] = createPartFromString(phone)
-                map["tgl_mulai"] = createPartFromString("")
-                map["tgl_selesai"] = createPartFromString("")
-                map["tgl_post"] = createPartFromString(DateCore.getDateToday())
-                map["email"] = createPartFromString(email)
-                map["no_telp"] = createPartFromString(phone)
-                map["status"] = createPartFromString("Menunggu Verifikasi")
-
-                sendDataEvent(body, map)
-
+            
+            if (checkEventDuration() == true) {
+                isLog("checkEventDuration true")
+                toast("true")
             } else {
 
-            //  push event without image
-            service.createEventWithoutImage(
-                "", idUser!!, title, description, location,
-                dateSelected, dateSelected, DateCore.getDateToday(),
-                phone, email, "Menunggu Verifikasi", ""
-            )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io()).subscribe({
-                    loadingDialog.dismiss()
-                    isLog("Success")
-                    toast(getString(R.string.successful))
-                    startActivity(
-                        intentFor<HomeActivity>(
-                            "HOME" to HomeActivity.EVENT
-                        )
+                toast("false")
+                isLog("checkEventDuration false")
+
+                if (BITMAP != null) {
+
+                    // set image
+                    val fileImage = ImageCorePermission.saveImageInStorage(BITMAP!!)
+                    val reqFile = RequestBody.create(MediaType.parse("image/*"), fileImage)
+                    val body = MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
+
+                    // set data
+                    val map = HashMap<String, RequestBody>()
+                    map["id_admin"] = createPartFromString("")
+                    map["id_user"] = createPartFromString(idUser)
+                    map["judul"] = createPartFromString(title)
+                    map["deskripsi"] = createPartFromString(description)
+                    map["lokasi"] = createPartFromString(location)
+                    map["no_telp"] = createPartFromString(phone)
+                    map["tgl_mulai"] = createPartFromString("")
+                    map["tgl_selesai"] = createPartFromString("")
+                    map["tgl_post"] = createPartFromString(DateCore.getDateToday())
+                    map["email"] = createPartFromString(email)
+                    map["no_telp"] = createPartFromString(phone)
+                    map["status"] = createPartFromString("Menunggu Verifikasi")
+
+                    sendDataEvent(body, map)
+
+                } else {
+
+                    //  push event without image
+                    service.createEventWithoutImage(
+                        "", idUser!!, title, description, location,
+                        DATE_SELECTED, DATE_SELECTED, DateCore.getDateToday(),
+                        phone, email, "Menunggu Verifikasi", ""
                     )
-                }, {
-                    loadingDialog.dismiss()
-                    isLog("Failed")
-                    toast("Gagal Simpan Event")
-                }).let {
-                    disposable.add(it)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io()).subscribe({
+                            loadingDialog.dismiss()
+                            isLog("Success")
+                            toast(getString(R.string.successful))
+                            startActivity(
+                                intentFor<HomeActivity>(
+                                    "HOME" to HomeActivity.EVENT
+                                )
+                            )
+                        }, {
+                            loadingDialog.dismiss()
+                            isLog("Failed")
+                            toast("Gagal Simpan Event")
+                        }).let {
+                            disposable.add(it)
+                        }
+
                 }
 
             }
@@ -154,6 +172,109 @@ class EventInput : AppCompatActivity() {
         } else {
             onNotComplete()
         }
+
+    }
+
+    private fun checkEventDuration(): Boolean {
+
+        var statusBookingEvent = false
+
+        var listData: MutableList<EventModelResponse.Data> = ArrayList()
+        var listDurationEvent: MutableList<String> = ArrayList()
+
+        val dateStartEvent = DATE_SELECTED.substring(8, 10)
+        val monthEvent = DATE_SELECTED.substring(0, 8)
+
+        isLog("start event : $dateStartEvent")
+        isLog("month event : $monthEvent")
+
+        if (DURATION_EVENT.toInt() > 1) {
+            for (position in 0 until DURATION_EVENT.toInt()) {
+                var selectedDate = dateStartEvent.toInt() +  position
+                val dateEvent: String = if (selectedDate < 10) "${monthEvent}0${selectedDate}" else "$monthEvent$selectedDate"
+                isLog("date event : $dateEvent")
+                listDurationEvent.add(dateEvent)
+            }
+            listDurationEvent.forEach {
+                isLog("duration event date : $it")
+            }
+
+        }
+
+        service.fetchEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe({
+                isLog("Success")
+                if (it.data.isNotEmpty()) {
+                    listData.addAll(it.data)
+
+                    for (i in 0 until listData.size) {
+
+                        val it = listData[i]
+                        val monthEventNotFullBooking = it.tgl_mulai.substring(0, 7)
+                        isLog("month data : $monthEventNotFullBooking")
+                        if (DURATION_EVENT.toInt() > 1) {
+                            var statusBooking = false
+                            listDurationEvent.forEach {
+                                if (monthEventNotFullBooking == DATE_SELECTED || monthEventNotFullBooking == it) {
+                                    statusBooking = true
+                                }
+                                isLog("duration event date : $it")
+                            }
+
+                            if (statusBooking == true) {
+                                statusBookingEvent = false
+                                onFullBookingDialog(monthEventNotFullBooking)
+                                break
+                            }
+
+                        } else {
+                            if (monthEventNotFullBooking == DATE_SELECTED) {
+                                statusBookingEvent = false
+                                onFullBookingDialog(monthEventNotFullBooking)
+                                break
+                            }
+                        }
+                    }
+
+                }
+            }, {
+                isLog("Failed")
+            }).let {
+                disposable.add(it)
+                return statusBookingEvent
+            }
+
+    }
+
+    private fun addDurationToSpinner() {
+
+        isLog("addYearToSpinner")
+
+        val listDay: MutableList<String> = ArrayList()
+        for (position in 0 until 7) {
+            val day = 1 + position
+            listDay.add("$day Hari")
+        }
+
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listDay)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        duration_event_spinner.adapter = arrayAdapter
+        duration_event_spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                ) {
+                    val data = parent!!.getItemAtPosition(position).toString()
+                    DURATION_EVENT = data.replace(" Hari", "")
+                    isLog("DURATION_SELECTED $data")
+                    isLog("duration data $DURATION_EVENT")
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //ga usah ada aksi
+                }
+            }
 
     }
 
@@ -232,6 +353,29 @@ class EventInput : AppCompatActivity() {
         loadingDialog = DialogLoading(this)
         loadingDialog.setCancelable(false)
     }
+
+    private fun onFullBookingDialog(dateEvent: String) {
+        val dialog = DialogInfo(
+            this@EventInput,
+            "Yah, sudah dipesan",
+            "Event pada tanggal $dateEvent sudah dipesan, silahkan pilih tanggal lain"
+        )
+        dialog.setCancelable(false)
+        dialog.show()
+
+    }
+
+    private fun onDialog(title: String, description: String) {
+        val dialog = DialogInfo(
+            this@EventInput,
+            title,
+            description
+        )
+        dialog.setCancelable(false)
+        dialog.show()
+
+    }
+
 
     private fun onWrong(msg: String) {
         toast(msg)

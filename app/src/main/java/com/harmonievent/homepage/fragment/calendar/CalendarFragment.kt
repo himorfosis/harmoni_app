@@ -145,6 +145,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
             .subscribeOn(Schedulers.io()).subscribe({
                 isLog("Success")
                 if (it.data.isNotEmpty()) {
+                    isLog("event size : ${it.data.size}")
                     listData.addAll(it.data)
                     setEventSelectedMonth(DateCore.getMonthNow())
                 } else {

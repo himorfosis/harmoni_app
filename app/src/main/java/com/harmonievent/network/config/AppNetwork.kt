@@ -6,6 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.URI
 import java.util.concurrent.TimeUnit
 
 class AppNetwork {
@@ -16,8 +17,11 @@ class AppNetwork {
         // lihat : IPv4 Address. . . . . . . . . . . : 192.190.0.101
         // tulis IP laptop anda di IP
 
-        private val IP = "http://192.190.0.101/"
-        private val URL = "${IP}harmoni/api/"
+        val IP = "http://192.190.0.101/"
+        val URL = "${IP}harmoni/"
+        val API = "${URL}api/"
+        val URL_IMAGE = "${URL}foto_event/"
+
         private val retrofitBuilder = Retrofit.Builder()
 
         fun <T> buildService(service: Class<T>) : T {
@@ -41,9 +45,7 @@ class AppNetwork {
             client.connectTimeout(2, TimeUnit.MINUTES)
             client.readTimeout(2, TimeUnit.MINUTES)
 
-            retrofitBuilder.baseUrl(
-                URL
-            )
+            retrofitBuilder.baseUrl(API)
                 .client(client.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

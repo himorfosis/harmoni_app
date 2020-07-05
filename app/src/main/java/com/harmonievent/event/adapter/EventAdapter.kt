@@ -9,6 +9,7 @@ import com.harmonievent.R
 import com.harmonievent.entity.EventModel
 import com.harmonievent.event.EventDetail
 import com.harmonievent.model.EventModelResponse
+import com.harmonievent.network.config.AppNetwork
 import kotlinx.android.synthetic.main.item_event.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -61,7 +62,7 @@ class EventAdapter : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
             date_event_tv.text = "${data.tgl_mulai} - ${data.tgl_selesai} "
 
             Glide.with(itemView.context)
-                .load(data.gambar)
+                .load("${AppNetwork.URL_IMAGE}${data.gambar}")
                 .thumbnail(0.1f)
                 .error(R.drawable.ic_broken_image)
                 .into(event_img)
