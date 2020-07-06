@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:gravity="center">
 
                 <TextView

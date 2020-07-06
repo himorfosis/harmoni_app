@@ -25,7 +25,6 @@ interface EventService {
     @FormUrlEncoded
     @POST("event")
     fun createEventWithoutImage(
-        @Field("id_admin") id_admin: String,
         @Field("id_user") id_user: String,
         @Field("judul") judul: String,
         @Field("deskripsi") deskripsi: String,

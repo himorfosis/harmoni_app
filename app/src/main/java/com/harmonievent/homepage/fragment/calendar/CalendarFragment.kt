@@ -91,13 +91,11 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
     private fun setEventSelectedMonth(monthSelected: String) {
 
         isLog("setEventSelectedMonth")
+        isLog("month : $monthSelected")
 
         adapterEvent.clear()
 
-        isLog("month : $monthSelected")
-
         var listEvent: MutableList<EventModelResponse.Data> = ArrayList()
-
         listData.forEach {
             val monthData = it.tgl_mulai.substring(0, 7)
             isLog("month data : $monthData")
@@ -140,6 +138,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
     private fun fetchEvent() {
 
+        isLog("fetchEvent")
         service.fetchEvent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe({
@@ -147,6 +146,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
                 if (it.data.isNotEmpty()) {
                     isLog("event size : ${it.data.size}")
                     listData.addAll(it.data)
+                    isLog("date selected : ${DateCore.getMonthNow()}")
                     setEventSelectedMonth(DateCore.getMonthNow())
                 } else {
                     onEventEmpty()

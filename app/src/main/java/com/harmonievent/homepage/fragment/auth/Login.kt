@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.harmonievent.R
 import com.harmonievent.dialog.DialogLoading
 import com.harmonievent.homepage.HomeActivity
+import com.harmonievent.homepage.HomeAuthActivity
 import com.harmonievent.network.config.AppNetwork
 import com.harmonievent.network.service.UserService
 import com.harmonievent.utilities.preferences.AppPreferences
@@ -47,6 +48,14 @@ class Login : Fragment() {
             checkAuth()
         }
 
+        register_tv.onClick {
+            startActivity(
+                intentFor<HomeAuthActivity>(
+                    "HOME" to HomeAuthActivity.REGISTER
+                )
+            )
+        }
+
     }
 
     private fun checkAuth() {
@@ -68,16 +77,16 @@ class Login : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe({
 
-                for (pos in 0 until  it.data.size) {
+                for (pos in 0 until it.data.size) {
 
                     var data = it.data[pos]
                     if (data.username == username && data.password == password) {
                         // save data preferences
-                        HarmoniPreferences.account.setString("name", username )
-                        HarmoniPreferences.account.setString("password", password )
-                        HarmoniPreferences.account.setString("email", data.email )
-                        HarmoniPreferences.account.setString("phone", data.no_telp )
-                        HarmoniPreferences.account.setString("id", data.id_user )
+                        HarmoniPreferences.account.setString("name", username)
+                        HarmoniPreferences.account.setString("password", password)
+                        HarmoniPreferences.account.setString("email", data.email)
+                        HarmoniPreferences.account.setString("phone", data.no_telp)
+                        HarmoniPreferences.account.setString("id", data.id_user)
 
                         onSuccessful()
                         break

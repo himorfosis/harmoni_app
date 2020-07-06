@@ -62,7 +62,7 @@ class Register : Fragment() {
         if (username.isNotEmpty() && password.isNotEmpty() && email.isNotEmpty()
             && phone.isNotEmpty()
         ) {
-            onPostLogin(UserModel(0, name, phone, email, password))
+            onPostLogin(UserModel(0, name, phone, email, username, password))
         } else {
             onNotComplete()
         }

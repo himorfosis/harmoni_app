@@ -118,6 +118,8 @@ class EventFragment : Fragment() {
 
     private fun fetchEvent() {
 
+        isLog("fetch event")
+
         service.fetchEvent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe({
@@ -151,12 +153,13 @@ class EventFragment : Fragment() {
         }
 
         if (listEvent.isNotEmpty()) {
-            onEventAvail()
+            isLog("list avail ${listEvent.size}")
+//            onEventAvail()
             adapterEvent.addAll(listEvent)
         } else {
+            isLog("list empty")
             onEventEmpty()
         }
-
 
     }
 

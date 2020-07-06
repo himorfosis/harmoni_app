@@ -82,7 +82,7 @@ class EventInput : AppCompatActivity() {
 
         send_event_btn.onClick {
 
-//            checkEventDuration()
+            checkEventDuration()
             checkSubmitDataEvent()
         }
 
@@ -124,7 +124,6 @@ class EventInput : AppCompatActivity() {
 
                     // set data
                     val map = HashMap<String, RequestBody>()
-                    map["id_admin"] = createPartFromString("")
                     map["id_user"] = createPartFromString(idUser)
                     map["judul"] = createPartFromString(title)
                     map["deskripsi"] = createPartFromString(description)
@@ -143,7 +142,7 @@ class EventInput : AppCompatActivity() {
 
                     //  push event without image
                     service.createEventWithoutImage(
-                        "", idUser!!, title, description, location,
+                        idUser!!, title, description, location,
                         DATE_SELECTED, DATE_SELECTED, DateCore.getDateToday(),
                         phone, email, "Menunggu Verifikasi", ""
                     )
