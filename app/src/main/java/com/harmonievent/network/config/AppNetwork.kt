@@ -17,17 +17,14 @@ class AppNetwork {
         // lihat : IPv4 Address. . . . . . . . . . . : 192.190.0.101
         // tulis IP laptop anda di IP
 
-        val IP = "http://192.190.0.101/"
-        val URL = "${IP}harmoni/"
+        val IP = "http://192.190.0.101"
+        val URL = "${IP}/harmoni/"
         val API = "${URL}api/"
         val URL_IMAGE = "${URL}foto_event/"
 
         private val retrofitBuilder = Retrofit.Builder()
 
         fun <T> buildService(service: Class<T>) : T {
-
-            Log.e("AppNetwork", "Build")
-            Log.e("AppNetwork", "${IP}harmoni/api/")
 
             val client = OkHttpClient.Builder()
             HttpLoggingInterceptor().apply {

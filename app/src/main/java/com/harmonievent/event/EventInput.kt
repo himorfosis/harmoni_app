@@ -51,7 +51,10 @@ class EventInput : AppCompatActivity() {
     val GALLERY = 1
     var BITMAP: Bitmap? = null
     var DATE_SELECTED = ""
+    var DATE_FINISH_SELECTED = ""
     var DURATION_EVENT = "1"
+
+    var listDataEvent: MutableList<EventModelResponse.Data> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,7 @@ class EventInput : AppCompatActivity() {
         addDurationToSpinner()
         imagePermission()
         setLoadingDialog()
+        fetchDataEvent()
     }
 
     private fun initUI() {
@@ -81,8 +85,6 @@ class EventInput : AppCompatActivity() {
         }
 
         send_event_btn.onClick {
-
-            checkEventDuration()
             checkSubmitDataEvent()
         }
 
@@ -106,21 +108,23 @@ class EventInput : AppCompatActivity() {
         ) {
 
             val idUser = HarmoniPreferences.account.getString("id")
-            
-            if (checkEventDuration() == true) {
-                isLog("checkEventDuration true")
-                toast("true")
+
+            if (checkEventDuration() == false) {
+                isLog("Tanggal Tersedia")
             } else {
+                loadingDialog.dismiss()
+                isLog("Tanggal Sudah Di Pesan")
+            }
 
-                toast("false")
+            if (checkEventDuration() == false) {
                 isLog("checkEventDuration false")
-
                 if (BITMAP != null) {
 
                     // set image
                     val fileImage = ImageCorePermission.saveImageInStorage(BITMAP!!)
                     val reqFile = RequestBody.create(MediaType.parse("image/*"), fileImage)
-                    val body = MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
+                    val body =
+                        MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
 
                     // set data
                     val map = HashMap<String, RequestBody>()
@@ -129,8 +133,8 @@ class EventInput : AppCompatActivity() {
                     map["deskripsi"] = createPartFromString(description)
                     map["lokasi"] = createPartFromString(location)
                     map["no_telp"] = createPartFromString(phone)
-                    map["tgl_mulai"] = createPartFromString("")
-                    map["tgl_selesai"] = createPartFromString("")
+                    map["tgl_mulai"] = createPartFromString(DATE_SELECTED)
+                    map["tgl_selesai"] = createPartFromString(DATE_FINISH_SELECTED)
                     map["tgl_post"] = createPartFromString(DateCore.getDateToday())
                     map["email"] = createPartFromString(email)
                     map["no_telp"] = createPartFromString(phone)
@@ -143,7 +147,7 @@ class EventInput : AppCompatActivity() {
                     //  push event without image
                     service.createEventWithoutImage(
                         idUser!!, title, description, location,
-                        DATE_SELECTED, DATE_SELECTED, DateCore.getDateToday(),
+                        DATE_SELECTED, DATE_FINISH_SELECTED, DateCore.getDateToday(),
                         phone, email, "Menunggu Verifikasi", ""
                     )
                         .observeOn(AndroidSchedulers.mainThread())
@@ -169,6 +173,7 @@ class EventInput : AppCompatActivity() {
             }
 
         } else {
+            loadingDialog.dismiss()
             onNotComplete()
         }
 
@@ -176,73 +181,87 @@ class EventInput : AppCompatActivity() {
 
     private fun checkEventDuration(): Boolean {
 
-        var statusBookingEvent = false
+        if (listDataEvent.isEmpty() || DURATION_EVENT.toInt() == 1) {
+            return false
+        } else {
 
-        var listData: MutableList<EventModelResponse.Data> = ArrayList()
-        var listDurationEvent: MutableList<String> = ArrayList()
+            // check available data date event
 
-        val dateStartEvent = DATE_SELECTED.substring(8, 10)
-        val monthEvent = DATE_SELECTED.substring(0, 8)
+            var statusBookingEvent = false
+            var listDurationEvent: MutableList<String> = ArrayList()
 
-        isLog("start event : $dateStartEvent")
-        isLog("month event : $monthEvent")
+            val dateStartEvent = DATE_SELECTED.substring(8, 10)
+            val monthEvent = DATE_SELECTED.substring(0, 8)
 
-        if (DURATION_EVENT.toInt() > 1) {
-            for (position in 0 until DURATION_EVENT.toInt()) {
-                var selectedDate = dateStartEvent.toInt() +  position
-                val dateEvent: String = if (selectedDate < 10) "${monthEvent}0${selectedDate}" else "$monthEvent$selectedDate"
-                isLog("date event : $dateEvent")
-                listDurationEvent.add(dateEvent)
+            isLog("start event : $dateStartEvent")
+            isLog("month event : $monthEvent")
+
+            if (DURATION_EVENT.toInt() > 1) {
+                for (position in 0 until DURATION_EVENT.toInt()) {
+                    var selectedDate = dateStartEvent.toInt() + position
+                    val dateEvent: String =
+                        if (selectedDate < 10) "${monthEvent}0${selectedDate}" else "$monthEvent$selectedDate"
+                    isLog("date event finish : $dateEvent")
+                    DATE_FINISH_SELECTED = dateEvent
+                    listDurationEvent.add(dateEvent)
+                }
+                listDurationEvent.forEach {
+                    isLog("duration event date : $it")
+                }
+
+            } else {
+                isLog("date event default : $DATE_SELECTED")
+                DATE_FINISH_SELECTED = DATE_SELECTED
             }
-            listDurationEvent.forEach {
-                isLog("duration event date : $it")
-            }
 
-        }
 
-        service.fetchEvent()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()).subscribe({
-                isLog("Success")
-                if (it.data.isNotEmpty()) {
-                    listData.addAll(it.data)
+            for (i in 0 until listDataEvent.size) {
 
-                    for (i in 0 until listData.size) {
+                val item = listDataEvent[i]
+                val monthEvent = item.tgl_mulai.substring(0, 7)
 
-                        val it = listData[i]
-                        val monthEventNotFullBooking = it.tgl_mulai.substring(0, 7)
-                        isLog("month data : $monthEventNotFullBooking")
-                        if (DURATION_EVENT.toInt() > 1) {
-                            var statusBooking = false
-                            listDurationEvent.forEach {
-                                if (monthEventNotFullBooking == DATE_SELECTED || monthEventNotFullBooking == it) {
-                                    statusBooking = true
-                                }
-                                isLog("duration event date : $it")
-                            }
+                if (item.status != "Menunggu Verifikasi") {
+                    isLog("=== Status Data : ${item.status} ===")
+                    if (DURATION_EVENT.toInt() > 1) {
 
-                            if (statusBooking == true) {
-                                statusBookingEvent = false
-                                onFullBookingDialog(monthEventNotFullBooking)
-                                break
-                            }
+                        var dateEventDuration = DATE_SELECTED.substring(8, 10)
+                        val dateEvent = dateEventDuration.toInt() + DURATION_EVENT.toInt()
 
+                        isLog("dateEventDuration : $dateEventDuration")
+                        isLog("sumDateEvent : $dateEvent")
+                        val selectedDateEvent = if (dateEvent > 10) {
+                            "$monthEvent-$dateEvent"
                         } else {
-                            if (monthEventNotFullBooking == DATE_SELECTED) {
-                                statusBookingEvent = false
-                                onFullBookingDialog(monthEventNotFullBooking)
-                                break
-                            }
+                            "$monthEvent-0$dateEvent"
                         }
+
+                        isLog("selectedDateEvent : $selectedDateEvent")
+                        listDurationEvent.forEach {
+
+                            isLog("====== CHECK DURATION ====")
+                            isLog("Date Selected  $DATE_SELECTED")
+                            isLog("Date Finish  $DATE_FINISH_SELECTED")
+                            isLog("date event selected = $it")
+
+                            if (it == item.tgl_mulai || it == item.tgl_selesai) {
+                                onFullBookingDialog(it)
+                                statusBookingEvent = true
+                            }
+
+                        }
+
+                        if (statusBookingEvent == true) {
+                            break
+                        }
+
                     }
 
                 }
-            }, {
-                isLog("Failed")
-            }).let {
-                disposable.add(it)
-                return statusBookingEvent
+
             }
+
+            return statusBookingEvent
+        }
 
     }
 
@@ -275,6 +294,23 @@ class EventInput : AppCompatActivity() {
                 }
             }
 
+    }
+
+    private fun fetchDataEvent() {
+        service.fetchEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe({
+                if (it.data.isNotEmpty()) {
+                    isLog("Event Available")
+                    listDataEvent.addAll(it.data)
+                } else {
+                    isLog("Event Empty")
+                }
+            }, {
+                isLog("Failed")
+            }).let {
+                disposable.add(it)
+            }
     }
 
     private fun imagePermission() {
