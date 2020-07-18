@@ -136,19 +136,6 @@
 
         </LinearLayout>
 
-
-        <ImageView
-            android:id="@+id/add_event_img"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/btn_circle_green"
-            android:padding="@dimen/_8sdp"
-            android:src="@drawable/ic_add_white"
-            android:visibility="gone"/>
-
-
     </FrameLayout>
 
 </LinearLayout>

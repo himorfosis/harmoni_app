@@ -47,6 +47,7 @@ class EventInput : AppCompatActivity() {
     lateinit var loadingDialog: DialogLoading
     val service = AppNetwork.buildService(EventService::class.java)
     private val disposable = CompositeDisposable()
+    lateinit var calendar: Calendar
 
     val GALLERY = 1
     var BITMAP: Bitmap? = null
@@ -55,6 +56,12 @@ class EventInput : AppCompatActivity() {
     var DURATION_EVENT = "1"
 
     var listDataEvent: MutableList<EventModelResponse.Data> = ArrayList()
+
+    var title: String = ""
+    var description: String = ""
+    var location: String = ""
+    var phone: String = ""
+    var email: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +78,7 @@ class EventInput : AppCompatActivity() {
     private fun initUI() {
 
         DATE_SELECTED = intent.getStringExtra("date")
-
-        val dateData1 = DATE_SELECTED.substring(7, 10)
-        val dateData = DATE_SELECTED.substring(8, 10)
-        isLog("dateData : $dateData")
-        isLog("dateData 1 : $dateData1")
+        calendar = Calendar.getInstance()
 
         choose_image_tv.onClick {
             imagePermission()
@@ -97,79 +100,26 @@ class EventInput : AppCompatActivity() {
 
         loadingDialog.show()
 
-        val title = title_event_ed.text.toString()
-        val description = description_event_ed.text.toString()
-        val location = location_event_ed.text.toString()
-        val phone = phone_event_ed.text.toString()
-        val email = email_ed.text.toString()
+        title = title_event_ed.text.toString()
+        description = description_event_ed.text.toString()
+        location = location_event_ed.text.toString()
+        phone = phone_event_ed.text.toString()
+        email = email_ed.text.toString()
 
         if (title.isNotEmpty() && description.isNotEmpty() && location.isNotEmpty() && phone.isNotEmpty()
             && email.isNotEmpty()
         ) {
 
-            val idUser = HarmoniPreferences.account.getString("id")
-
             if (checkEventDuration() == false) {
                 isLog("Tanggal Tersedia")
+                if (BITMAP != null) {
+                    pushCreateEventWithImage()
+                } else {
+                    pushCreateEventWithoutImage()
+                }
             } else {
                 loadingDialog.dismiss()
                 isLog("Tanggal Sudah Di Pesan")
-            }
-
-            if (checkEventDuration() == false) {
-                isLog("checkEventDuration false")
-                if (BITMAP != null) {
-
-                    // set image
-                    val fileImage = ImageCorePermission.saveImageInStorage(BITMAP!!)
-                    val reqFile = RequestBody.create(MediaType.parse("image/*"), fileImage)
-                    val body =
-                        MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
-
-                    // set data
-                    val map = HashMap<String, RequestBody>()
-                    map["id_user"] = createPartFromString(idUser)
-                    map["judul"] = createPartFromString(title)
-                    map["deskripsi"] = createPartFromString(description)
-                    map["lokasi"] = createPartFromString(location)
-                    map["no_telp"] = createPartFromString(phone)
-                    map["tgl_mulai"] = createPartFromString(DATE_SELECTED)
-                    map["tgl_selesai"] = createPartFromString(DATE_FINISH_SELECTED)
-                    map["tgl_post"] = createPartFromString(DateCore.getDateToday())
-                    map["email"] = createPartFromString(email)
-                    map["no_telp"] = createPartFromString(phone)
-                    map["status"] = createPartFromString("Menunggu Verifikasi")
-
-                    sendDataEvent(body, map)
-
-                } else {
-
-                    //  push event without image
-                    service.createEventWithoutImage(
-                        idUser!!, title, description, location,
-                        DATE_SELECTED, DATE_FINISH_SELECTED, DateCore.getDateToday(),
-                        phone, email, "Menunggu Verifikasi", ""
-                    )
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io()).subscribe({
-                            loadingDialog.dismiss()
-                            isLog("Success")
-                            toast(getString(R.string.successful))
-                            startActivity(
-                                intentFor<HomeActivity>(
-                                    "HOME" to HomeActivity.EVENT
-                                )
-                            )
-                        }, {
-                            loadingDialog.dismiss()
-                            isLog("Failed")
-                            toast("Gagal Simpan Event")
-                        }).let {
-                            disposable.add(it)
-                        }
-
-                }
-
             }
 
         } else {
@@ -182,38 +132,25 @@ class EventInput : AppCompatActivity() {
     private fun checkEventDuration(): Boolean {
 
         if (listDataEvent.isEmpty() || DURATION_EVENT.toInt() == 1) {
+            DATE_FINISH_SELECTED = DATE_SELECTED
             return false
         } else {
 
             // check available data date event
-
             var statusBookingEvent = false
             var listDurationEvent: MutableList<String> = ArrayList()
 
             val dateStartEvent = DATE_SELECTED.substring(8, 10)
             val monthEvent = DATE_SELECTED.substring(0, 8)
 
-            isLog("start event : $dateStartEvent")
-            isLog("month event : $monthEvent")
-
-            if (DURATION_EVENT.toInt() > 1) {
-                for (position in 0 until DURATION_EVENT.toInt()) {
-                    var selectedDate = dateStartEvent.toInt() + position
-                    val dateEvent: String =
-                        if (selectedDate < 10) "${monthEvent}0${selectedDate}" else "$monthEvent$selectedDate"
-                    isLog("date event finish : $dateEvent")
-                    DATE_FINISH_SELECTED = dateEvent
-                    listDurationEvent.add(dateEvent)
-                }
-                listDurationEvent.forEach {
-                    isLog("duration event date : $it")
-                }
-
-            } else {
-                isLog("date event default : $DATE_SELECTED")
-                DATE_FINISH_SELECTED = DATE_SELECTED
+            for (position in 0 until DURATION_EVENT.toInt()) {
+                var selectedDate = dateStartEvent.toInt() + position
+                val dateEvent: String =
+                    if (selectedDate < 10) "${monthEvent}0${selectedDate}" else "$monthEvent$selectedDate"
+                isLog("date event finish : $dateEvent")
+                DATE_FINISH_SELECTED = dateEvent
+                listDurationEvent.add(dateEvent)
             }
-
 
             for (i in 0 until listDataEvent.size) {
 
@@ -221,35 +158,36 @@ class EventInput : AppCompatActivity() {
                 val monthEvent = item.tgl_mulai.substring(0, 7)
 
                 if (item.status != "Menunggu Verifikasi") {
-                    isLog("=== Status Data : ${item.status} ===")
                     if (DURATION_EVENT.toInt() > 1) {
 
                         var dateEventDuration = DATE_SELECTED.substring(8, 10)
                         val dateEvent = dateEventDuration.toInt() + DURATION_EVENT.toInt()
 
-                        isLog("dateEventDuration : $dateEventDuration")
-                        isLog("sumDateEvent : $dateEvent")
-                        val selectedDateEvent = if (dateEvent > 10) {
-                            "$monthEvent-$dateEvent"
+                        val maxDate = calendar.getActualMaximum(Calendar.DATE)
+                        if (dateEvent > maxDate) {
+                            onDialog(
+                                "Tanggal Maksimal",
+                                "Yah, tanggal yang kamu pilih sudah melebihi bulan ini, silahkan tambah di bulan kedepannya"
+                            )
+                            statusBookingEvent = true
+
                         } else {
-                            "$monthEvent-0$dateEvent"
-                        }
 
-                        isLog("selectedDateEvent : $selectedDateEvent")
-                        listDurationEvent.forEach {
-
-                            isLog("====== CHECK DURATION ====")
-                            isLog("Date Selected  $DATE_SELECTED")
-                            isLog("Date Finish  $DATE_FINISH_SELECTED")
-                            isLog("date event selected = $it")
-
-                            if (it == item.tgl_mulai || it == item.tgl_selesai) {
-                                onFullBookingDialog(it)
-                                statusBookingEvent = true
+                            var selectedDateEvent = if (dateEvent > 10) {
+                                "$monthEvent-$dateEvent"
+                            } else {
+                                "$monthEvent-0$dateEvent"
                             }
 
-                        }
+                            isLog("selectedDateEvent : $selectedDateEvent")
+                            listDurationEvent.forEach {
 
+                                if (it == item.tgl_mulai || it == item.tgl_selesai) {
+                                    onFullBookingDialog(it)
+                                    statusBookingEvent = true
+                                }
+                            }
+                        }
                         if (statusBookingEvent == true) {
                             break
                         }
@@ -330,9 +268,8 @@ class EventInput : AppCompatActivity() {
                 val contentURI = data.data
                 try {
 
-                    val bitmapImage = MediaStore.Images.Media.getBitmap(contentResolver, contentURI)
-                    BITMAP = bitmapImage
-                    Glide.with(this).load(bitmapImage).thumbnail().into(upload_event_img)
+                    BITMAP = MediaStore.Images.Media.getBitmap(contentResolver, contentURI)
+                    Glide.with(this).load(BITMAP).thumbnail().into(upload_event_img)
 
                 } catch (e: Exception) {
                     onWrong(e.toString())
@@ -343,7 +280,62 @@ class EventInput : AppCompatActivity() {
 
     }
 
-    private fun sendDataEvent(imageBody: MultipartBody.Part, mapData: Map<String, RequestBody>) {
+    private fun pushCreateEventWithoutImage() {
+
+        val idUser = HarmoniPreferences.account.getString("id")
+
+        //  push event without image
+        service.createEventWithoutImage(
+            idUser!!, title, description, location,
+            DATE_SELECTED, DATE_FINISH_SELECTED, DateCore.getDateToday(),
+            phone, email, "Menunggu Verifikasi", ""
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe({
+                loadingDialog.dismiss()
+                isLog("Success")
+                toast(getString(R.string.successful))
+                startActivity(
+                    intentFor<HomeActivity>(
+                        "HOME" to HomeActivity.EVENT
+                    )
+                )
+            }, {
+                loadingDialog.dismiss()
+                isLog("Failed")
+                toast("Gagal Simpan Event")
+            }).let {
+                disposable.add(it)
+            }
+
+    }
+
+    private fun pushCreateEventWithImage() {
+
+        val idUser = HarmoniPreferences.account.getString("id")
+
+        // set image
+        val fileImage = ImageCorePermission.saveImageInStorage(BITMAP!!)
+        val reqFile = RequestBody.create(MediaType.parse("image/*"), fileImage)
+        val imageBody =
+            MultipartBody.Part.createFormData("gambar", fileImage!!.name, reqFile)
+
+        isLog("name file : ${fileImage!!.name}")
+
+        // set data
+        val mapData = HashMap<String, RequestBody>()
+        mapData["id_user"] = createPartFromString(idUser)
+        mapData["judul"] = createPartFromString(title)
+        mapData["deskripsi"] = createPartFromString(description)
+        mapData["lokasi"] = createPartFromString(location)
+        mapData["no_telp"] = createPartFromString(phone)
+        mapData["tgl_mulai"] = createPartFromString(DATE_SELECTED)
+        mapData["tgl_selesai"] = createPartFromString(DATE_FINISH_SELECTED)
+        mapData["tgl_post"] = createPartFromString(DateCore.getDateToday())
+        mapData["email"] = createPartFromString(email)
+        mapData["no_telp"] = createPartFromString(phone)
+        mapData["status"] = createPartFromString("Menunggu Verifikasi")
+
         isLog("image : $imageBody")
         isLog("data : $mapData")
         isLog("Send Data Image")
@@ -408,9 +400,7 @@ class EventInput : AppCompatActivity() {
         )
         dialog.setCancelable(false)
         dialog.show()
-
     }
-
 
     private fun onWrong(msg: String) {
         toast(msg)

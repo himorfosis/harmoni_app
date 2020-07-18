@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -21,22 +20,28 @@ import java.io.IOException
 object ImageCorePermission {
 
     var STORAGE_PERMISSION_CODE = 123
-    val directoryStorage = File(Environment.getExternalStorageDirectory().absolutePath, "/Harmoni")
+//    val directoryStorage = File(Environment.getExternalStorageDirectory().absolutePath, "/Harmoni")
 
     fun saveImageInStorage(bitmap: Bitmap): File? {
+
+        var fileImage = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+            System.currentTimeMillis().toString() + "-harmoni.jpg"
+        )
+
         val bos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
         val bitmapdata = bos.toByteArray()
         //write the bytes in file
         try {
-            val fos = FileOutputStream(directoryStorage)
+            val fos = FileOutputStream(fileImage)
             fos.write(bitmapdata)
             fos.flush()
             fos.close()
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return directoryStorage
+        return fileImage
     }
 
     fun selectedImageInStorage() {

@@ -18,6 +18,12 @@ object DateCore {
         return today.toString()
     }
 
+    fun getDateTime(): String {
+        val date = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+        val today = date.format(Date())
+        return today.toString()
+    }
+
     fun convertStringToDateTime(dateData: String): Long {
 
         val format = SimpleDateFormat("dd-MM-yyyy")

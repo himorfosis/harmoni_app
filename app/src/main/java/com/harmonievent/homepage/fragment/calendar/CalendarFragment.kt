@@ -26,7 +26,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.fragment_calendar.add_event_img
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -68,10 +67,6 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
         fetchEvent()
         calendarViewCustom.setUseThreeLetterAbbreviation(true)
 
-        add_event_img.onClick {
-//            inputEvent()
-        }
-
     }
 
     private fun inputEvent(date: String) {
@@ -98,9 +93,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
         var listEvent: MutableList<EventModelResponse.Data> = ArrayList()
         listData.forEach {
             val monthData = it.tgl_mulai.substring(0, 7)
-            isLog("month data : $monthData")
             if (monthSelected == monthData) {
-                isLog("loop tgl ${it.tgl_selesai}")
                 listEvent.add(it)
             }
         }
@@ -116,7 +109,7 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
     private fun setCalendarData(it: List<EventModelResponse.Data>) {
 
-        isLog("setCalendarData size : ${it.size}")
+        isLog("==== setCalendarData ====")
 
         it.forEach {
 
@@ -124,16 +117,48 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
             val month = DateCore.selectedMonth(it.tgl_mulai)
             val year = DateCore.selectedYear(it.tgl_mulai)
 
+            val dateFinal = DateCore.selectedDate(it.tgl_selesai)
+            val monthinal = DateCore.selectedMonth(it.tgl_selesai)
+            val yearinal = DateCore.selectedYear(it.tgl_selesai)
+
+            val dateTimeFinish = formatter.parse("$dateFinal-$monthinal-$yearinal")
             val dateTime = formatter.parse("$date-$month-$year")
-            if (it.status == "Menunggu Verifikasi") {
-                val eventDate = Event(Color.YELLOW, dateTime.time, it.judul)
-                calendarViewCustom.addEvent(eventDate)
+
+            if (it.tgl_mulai != it.tgl_selesai) {
+
+                var dateStart = it.tgl_mulai.substring(8, 10)
+                var dateFinal = it.tgl_selesai.substring(8, 10)
+
+                val durationEvent = dateFinal.toInt() - dateStart.toInt()
+
+                for (item in 0 until durationEvent) {
+                    isLog("=== Duration ===")
+                    val date = dateStart.toInt() + item
+                    val selectedDateEvent = if (date > 10) {
+                        formatter.parse("$date-$month-$year")
+                    } else {
+                        formatter.parse("0$date-$month-$year")
+                    }
+                    setDateCalendarViewCustom(it, selectedDateEvent)
+                }
+                setDateCalendarViewCustom(it, dateTimeFinish)
+
             } else {
-                val eventDate = Event(Color.GREEN, dateTime.time, it.judul)
-                calendarViewCustom.addEvent(eventDate)
+                setDateCalendarViewCustom(it, dateTime)
             }
+
         }
 
+    }
+
+    private fun setDateCalendarViewCustom(it : EventModelResponse.Data, date: Date) {
+        if (it.status == "Menunggu Verifikasi") {
+            val eventDate = Event(Color.YELLOW, date.time, it.judul)
+            calendarViewCustom.addEvent(eventDate)
+        } else {
+            val eventDate = Event(Color.GREEN, date.time, it.judul)
+            calendarViewCustom.addEvent(eventDate)
+        }
     }
 
     private fun fetchEvent() {
@@ -212,6 +237,53 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
             var statusEvent = false
             for (pos in 0 until listData.size) {
                 val it = listData[pos]
+
+                if (it.tgl_mulai != it.tgl_selesai) {
+
+                    var dateStart = it.tgl_mulai.substring(8, 10)
+                    var dateFinal = it.tgl_selesai.substring(8, 10)
+
+                    var monthSelected = it.tgl_mulai.substring(0, 7)
+
+                    isLog("month selected = $monthSelected")
+
+                    val durationEvent = dateFinal.toInt() - dateStart.toInt()
+
+                    for (item in 0 until durationEvent) {
+                        isLog("=== Duration ===")
+                        val date = dateStart.toInt() + item
+                        val selectedDateEvent = if (date > 10) {
+                            "$monthSelected-$date"
+                        } else {
+                            "$monthSelected-0$date"
+                        }
+
+                        if (dateSelected == selectedDateEvent || dateSelected == it.tgl_selesai) {
+                            if (it.status != "Menunggu Verifikasi") {
+                                isLog("date selected : ${it.tgl_mulai}")
+                                onDialog(it.judul, "Event ${it.judul} diselenggarakan bertempat di ${it.lokasi}")
+                                statusEvent = true
+                            }
+                        }
+                    }
+
+                    if (statusEvent == true) {
+                        break
+                    }
+
+                } else {
+                    if (dateSelected == it.tgl_mulai || dateSelected == it.tgl_selesai) {
+                        if (it.status == "Menunggu Verifikasi") {
+                            statusEvent = false
+                        } else {
+                            isLog("date selected : ${it.tgl_mulai}")
+                            onDialog(it.judul, "Event ${it.judul} diselenggarakan bertempat di ${it.lokasi}")
+                            statusEvent = true
+                        }
+                        break
+                    }
+                }
+
                 if (dateSelected == it.tgl_mulai) {
                     if (it.status == "Menunggu Verifikasi") {
                         statusEvent = false
