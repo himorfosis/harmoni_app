@@ -64,6 +64,9 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
 
     private fun initUI() {
 
+        val dateMonthName = dateFormatMonth.format(DateCore.getDateMonthNow())
+        month_calendar_tv.text = dateMonthName
+
         fetchEvent()
         calendarViewCustom.setUseThreeLetterAbbreviation(true)
 
@@ -307,8 +310,10 @@ class CalendarFragment : Fragment(), CompactCalendarView.CompactCalendarViewList
     }
 
     override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-        isLog("swipe : $firstDayOfNewMonth")
+        isLog("onMonthScroll : $firstDayOfNewMonth")
         val dateMonth = dateFormatMonth.format(firstDayOfNewMonth)
+
+        isLog("date : $dateMonth")
         month_calendar_tv.text = dateMonth
 
         val monthSelected = DateCore.convertDateToMonth(firstDayOfNewMonth!!)

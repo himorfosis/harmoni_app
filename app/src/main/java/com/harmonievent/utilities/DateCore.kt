@@ -55,6 +55,13 @@ object DateCore {
         return today.toString()
     }
 
+    fun getDateMonthNow():Date{
+        val date = SimpleDateFormat("yyyy-MM")
+        var format = SimpleDateFormat("yyyy-MM")
+        val data = date.format(Date())
+        return format.parse(data)
+    }
+
     fun convertDateToMonth(date: Date): String {
         var dateFormat: DateFormat = SimpleDateFormat("yyyy-MM")
         return dateFormat.format(date)

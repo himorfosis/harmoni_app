@@ -297,7 +297,7 @@ class EventInput : AppCompatActivity() {
                 toast(getString(R.string.successful))
                 startActivity(
                     intentFor<HomeActivity>(
-                        "HOME" to HomeActivity.EVENT
+                        "HOME" to HomeActivity.CALENDAR
                     )
                 )
             }, {

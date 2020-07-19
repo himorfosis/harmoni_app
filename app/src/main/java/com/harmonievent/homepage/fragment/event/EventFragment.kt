@@ -124,7 +124,16 @@ class EventFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe({
                 isLog("Success")
-                listData.addAll(it.data)
+
+                it.data.forEach {
+
+                    if (it.status != "Menunggu Verifikasi") {
+                        listData.add(it)
+                    }
+
+                }
+
+//                listData.addAll(it.data)
                 onSuccessFetchEvent()
             }, {
                 onFailedFetch()
