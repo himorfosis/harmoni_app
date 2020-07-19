@@ -50,10 +50,10 @@ class EventInput : AppCompatActivity() {
     lateinit var calendar: Calendar
 
     val GALLERY = 1
-    var BITMAP: Bitmap? = null
-    var DATE_SELECTED = ""
-    var DATE_FINISH_SELECTED = ""
-    var DURATION_EVENT = "1"
+    var BITMAP: Bitmap? = null //untuk menampung file gambar
+    var DATE_SELECTED = "" //date event dimulai
+    var DATE_FINISH_SELECTED = "" //date event selesai
+    var DURATION_EVENT = "1" //durasi event
 
     var listDataEvent: MutableList<EventModelResponse.Data> = ArrayList()
 
@@ -75,7 +75,7 @@ class EventInput : AppCompatActivity() {
         fetchDataEvent()
     }
 
-    private fun initUI() {
+    private fun initUI() { //untuk tampilan data pada layout
 
         DATE_SELECTED = intent.getStringExtra("date")
         calendar = Calendar.getInstance()
@@ -234,7 +234,7 @@ class EventInput : AppCompatActivity() {
 
     }
 
-    private fun fetchDataEvent() {
+    private fun fetchDataEvent() { //mengambil data dari server
         service.fetchEvent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe({

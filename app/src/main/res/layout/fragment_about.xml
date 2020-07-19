@@ -78,7 +78,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:text="@string/our_vision" />
+                        android:text="@string/our_vision"
+                        android:gravity="center"
+                        />
 
                     <TextView
                         style="@style/text_detail_description"
@@ -87,12 +89,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/our_vision_description" />
 
-                    <TextView
-                        style="@style/text_item_title_about"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:text="@string/our_mission" />
+
 
                 </LinearLayout>
 
@@ -110,6 +107,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/text_item_title_about"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/our_mission"
+                        android:gravity="center" />
 
                     <TextView
                         style="@style/text_detail_description"
@@ -141,7 +146,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:text="@string/our_story" />
+                        android:text="@string/our_story"
+                        android:gravity="center"/>
 
                     <TextView
                         style="@style/text_detail_description"
