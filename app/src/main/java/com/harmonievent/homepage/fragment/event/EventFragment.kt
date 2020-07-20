@@ -102,7 +102,6 @@ class EventFragment : Fragment() {
         addMonthToSpinner()
 
         month_spinner.setSelection(calendar.get(Calendar.MONTH))
-        month_spinner.setSelection(calendar.get(Calendar.MONTH))
 
     }
 

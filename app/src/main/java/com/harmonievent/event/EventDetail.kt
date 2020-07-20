@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.harmonievent.R
+import com.harmonievent.network.config.AppNetwork
 import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -36,7 +37,7 @@ class EventDetail : AppCompatActivity() {
         location_event_tv.text = "Lokasi : $location"
         date_event_tv.text = "Tanggal : $dateStart - $dateEnd"
 
-        Glide.with(this).load(image)
+        Glide.with(this).load("${AppNetwork.URL_IMAGE}$image")
             .thumbnail(0.1f)
             .error(R.drawable.ic_broken_image)
             .into(image_event_img)

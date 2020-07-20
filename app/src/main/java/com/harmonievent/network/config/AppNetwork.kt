@@ -17,7 +17,7 @@ class AppNetwork {
         // lihat : IPv4 Address. . . . . . . . . . . : 192.190.0.101
         // tulis IP laptop anda di IP
 
-        val IP = "http://192.168.0.109"
+        val IP = "http://172.20.10.2"
         val URL = "${IP}/harmoni/"
         val API = "${URL}api/"
         val URL_IMAGE = "${URL}foto_event/"
